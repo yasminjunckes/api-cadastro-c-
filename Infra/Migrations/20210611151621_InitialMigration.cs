@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infra.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -21,11 +21,11 @@ namespace Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Adresses",
+                name: "Adress",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -41,28 +41,28 @@ namespace Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Adresses", x => x.Id);
+                    table.PrimaryKey("PK_Adress", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Adresses_Users_UserId",
+                        name: "FK_Adress_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
+                table: "User",
                 columns: new[] { "Id", "BirthDate", "Email", "Name", "PersonalDocument", "Phone", "RemovedAt" },
-                values: new object[] { new Guid("2f19d672-0dbb-4a7b-babc-04bee0a2142c"), "01/01/2000", "usertest@gmail.com", "User Test", "24068108013", "47992345671", null });
+                values: new object[] { new Guid("02e34f4c-44dd-4fd5-bb51-ce16a275c015"), "01/01/2000", "usertest@gmail.com", "User Test", "24068108013", "47992345671", null });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adresses_UserId",
-                table: "Adresses",
+                name: "IX_Adress_UserId",
+                table: "Adress",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
+                name: "IX_User_Email",
+                table: "User",
                 column: "Email",
                 unique: true);
         }
@@ -70,10 +70,10 @@ namespace Infra.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Adresses");
+                name: "Adress");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
         }
     }
 }

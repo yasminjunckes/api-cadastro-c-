@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ApiCadastroContext))]
-    [Migration("20210610192955_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210611151621_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,7 +64,7 @@ namespace Infra.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Adresses");
+                    b.ToTable("Adress");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -103,12 +103,12 @@ namespace Infra.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2f19d672-0dbb-4a7b-babc-04bee0a2142c"),
+                            Id = new Guid("02e34f4c-44dd-4fd5-bb51-ce16a275c015"),
                             BirthDate = "01/01/2000",
                             Email = "usertest@gmail.com",
                             Name = "User Test",

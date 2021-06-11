@@ -26,6 +26,9 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ProviderConnectionString")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
