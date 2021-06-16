@@ -121,18 +121,24 @@ namespace Domain.Entities
 
         protected bool  ValidatePhone()
         {
-            if (Phone != null)
+            if (Phone != null && Phone != "")
             {
                 var phone = Phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace(".", "");
-
-                if (!phone.All(char.IsNumber)) return false;
-
-                if (phone[2] == 9 && phone.Length != 11) return false; // Se for um celular, precisa ter 11 dígitos
-
-                if (phone[2] != 9 && phone.Length != 10) return false; // Se for fixo, precisa ter 10 dígitos
+                if (phone.All(char.IsNumber))
+                {
+                    if (phone[2] == 57 && phone.Length == 11)  // Compara se o 1º numero depois do DDD é 9 (tabela ASCII)
+                    {
+                        return true;
+                    }
+                    else if (Convert.ToInt32(phone[2].ToString()) != 9 && phone.Length == 10)  // Compara de o 1º numero depois do DDD NÃO é 9
+                    {
+                        return true;
+                    }
+                }
             }
-            return true;
+            return false;
         }
+
 
         public (IList<string> errors, bool isValid) Validate()
         {
