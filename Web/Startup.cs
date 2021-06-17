@@ -1,4 +1,8 @@
 using Infra.Context;
+using Domain.Entities;
+using Domain.Interfaces;
+using Infra.Repositories;
+using Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,9 +30,13 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            
 
             services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ProviderConnectionString")));
-
+            
+            services.AddScoped(typeof (IGenericRepository<>), typeof (GenericRepository<>));
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IUsersService, UsersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
