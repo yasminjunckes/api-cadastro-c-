@@ -30,13 +30,14 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            
 
-            services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ProviderConnectionString")));
+            var connectionString = Environment.GetEnvironmentVariable("ProviderConnectionString");
+            services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql(connectionString));
             
             services.AddScoped(typeof (IGenericRepository<>), typeof (GenericRepository<>));
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
