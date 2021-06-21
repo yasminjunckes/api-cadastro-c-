@@ -36,49 +36,26 @@ namespace Web.Controllers.Users
                 return Ok();      
         }
 
-        // [HttpPut("{id}")]
-        // public IActionResult UpdateUser(Guid id, [FromBody] CreateUserRequest request)
-        // {
-        //     StringValues userId;
-        //     if (!Request.Headers.TryGetValue("UserId", out userId))
-        //     {
-        //         return Unauthorized();
-        //     }
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(Guid id, [FromBody] UserRequest request)
+        {
 
-        //     var user = _usersService.GetById(Guid.Parse(userId));
+          var modifiedUser = _usersService.GetById(id);
+            if (modifiedUser == null)
+            {
+                return NotFound();
+            }
 
-        //     if (user == null)
-        //     {
-        //         return Unauthorized();
-        //     }
-        //     if (user.CPF != request.CPF)
-        //     {
-        //         return Unauthorized();
-        //     }
+            modifiedUser.Name = request.Name;
+            modifiedUser.PersonalDocument = request.PersonalDocument;
+            modifiedUser.Email = request.Email;
+            modifiedUser.Phone = request.Phone;
+            modifiedUser.BirthDate = request.BirthDate;
 
-        //     var modifiedUser = _usersService.GetById(id);
-        //     if (modifiedUser == null)
-        //     {
-        //         return NotFound();
-        //     }
+            _usersService.Modify(modifiedUser);
+            return NoContent();
 
-        //     modifiedUser.Name = request.Name;
-        //     modifiedUser.CPF = request.CPF;
-        //     modifiedUser.Email = request.Email;
-        //     modifiedUser.Phone = request.Phone;
-        //     modifiedUser.State = request.State;
-        //     modifiedUser.City = request.City;
-        //     modifiedUser.District = request.District;
-        //     modifiedUser.ZipCode = request.ZipCode;
-        //     modifiedUser.HouseNumber = request.HouseNumber;
-        //     modifiedUser.AddressComplement = request.AddressComplement;
-        //     modifiedUser.Profile = request.Profile;
-        //     modifiedUser.Password = request.Password;
-
-        //     _usersService.Modify(modifiedUser);
-        //     return NoContent();
-
-        // }
+        }
 
 
 
