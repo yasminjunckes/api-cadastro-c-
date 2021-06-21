@@ -69,6 +69,20 @@ namespace Web.Controllers.Users
             }
 
             return Ok(user);
+        }  
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var user = _usersService.GetById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.RemovedAt = DateTime.Now;
+            _usersService.Modify(user);
+            return Ok("Usuario " + user.Name + " removido com sucesso");
         }
     }
 }
