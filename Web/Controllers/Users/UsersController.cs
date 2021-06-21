@@ -39,7 +39,6 @@ namespace Web.Controllers.Users
         [HttpPut("{id}")]
         public IActionResult UpdateUser(Guid id, [FromBody] UserRequest request)
         {
-
           var modifiedUser = _usersService.GetById(id);
             if (modifiedUser == null)
             {
@@ -53,7 +52,7 @@ namespace Web.Controllers.Users
             modifiedUser.BirthDate = request.BirthDate;
 
             _usersService.Modify(modifiedUser);
-            return NoContent();
+            return Ok("Usuario alterado com sucesso");
 
         }
 
