@@ -77,22 +77,22 @@ namespace Web.Controllers.Users
 
         //     _usersService.Modify(modifiedUser);
         //     return NoContent();
-            
+
         // }
 
-        
 
-        // [HttpGet("{id}")]
-        // public IActionResult GetById(Guid id)
-        // {
-        //     var user = _usersService.GetById(id);
-            
-        //     if (user == null)
-        //     {
-        //         return NotFound();
-        //     }
-            
-        //     return Ok(user);
-        // }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            var user = _usersService.GetById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
     }
 }

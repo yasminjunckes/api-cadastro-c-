@@ -22,11 +22,12 @@ namespace Infra.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var connectionString = Environment.GetEnvironmentVariable("ProviderConnectionString");
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
                     .UseLazyLoadingProxies()
-                    .UseNpgsql("DefaultConnection");
+                    .UseNpgsql(connectionString);
             }
         }
     }
