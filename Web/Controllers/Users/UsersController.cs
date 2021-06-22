@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Web.Controllers.Users
 {
@@ -93,6 +95,26 @@ namespace Web.Controllers.Users
             }
 
             return Ok(user);
+        }
+
+        [HttpGet()]
+        public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
+        {
+            var user = _usersService.GetAll(x =>
+            {
+                bool matches = true;
+                if (model.TryGetValue("name", out string name))
+                {
+                    matches = matches && x.Name == name;
+                }
+                return matches;
+            });
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user.OrderBy(x => x.Name));
         }
     }
 }
