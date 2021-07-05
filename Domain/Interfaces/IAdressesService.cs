@@ -21,5 +21,7 @@ namespace Domain.Interfaces
 
         Adress GetById(Guid id);
 
+        Adress GetAdress(string postalCode);
+
     }
 }

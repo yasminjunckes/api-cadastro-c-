@@ -16,10 +16,19 @@ namespace Domain.Entities
         public Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
 
+        public Adress(string line1, string postalCode, string city, string state, string district)
+        {
+            Line1 = line1;
+            PostalCode = postalCode;
+            City = city;
+            State = state;
+            District = district;
+        }
+
         public Adress(string line1, string line2, int number, string postalCode, string city, string state, string district, bool principal, Guid userId)
         {
             Id = Guid.NewGuid();
-            Line1 = line2;
+            Line1 = line1;
             Line2 = line2;
             Number = number;
             PostalCode = postalCode;

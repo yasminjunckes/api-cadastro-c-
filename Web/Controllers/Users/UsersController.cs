@@ -20,7 +20,7 @@ namespace Web.Controllers.Users
 
         [HttpPost]
         //IActionResult é mais genérico e conseguimos retornar tanto o Unauthorized, quanto o Ok.
-        public IActionResult Create(UserRequest request)
+        public IActionResult Create(UsersRequest request)
         {
             var response = _usersService.Create(
                 request.Name,
@@ -39,7 +39,7 @@ namespace Web.Controllers.Users
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] UserRequest request)
+        public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
         {
           var modifiedUser = _usersService.GetById(id);
             if (modifiedUser == null)

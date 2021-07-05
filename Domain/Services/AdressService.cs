@@ -3,6 +3,9 @@ using Domain.Entities;
 using Domain.DTO;
 using Domain.Interfaces;
 using System.Collections.Generic;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Domain.Services
 {
@@ -42,6 +45,33 @@ namespace Domain.Services
              return new AdressDTO(adress.Id);
         }
 
+        public Adress GetAdress(string postaslCode)
+        {
+           WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
+
+           request.Credentials = CredentialCache.DefaultCredentials;
+           HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+           Stream dataStream = response.GetResponseStream();
+           StreamReader reader = new StreamReader(dataStream);
+           string responseFromServer = reader.ReadToEnd();
+
+           reader.Close();
+           dataStream.Close();
+           response.Close();
+
+           JObject json = JObject.Parse(responseFromServer);
+
+           string line1 = (string)json.GetValue("logradouro");
+           string city = (string)json.GetValue("localidade");
+           string state = (string)json.GetValue("uf");
+           string district = (string)json.GetValue("bairro");
+
+           Adress adress = new Adress(line1, postaslCode, city, state, district);
+
+           return adress;        
+        }
+            
         public Adress GetById(Guid id)
         {
             return _adressesRepository.Get(id);
