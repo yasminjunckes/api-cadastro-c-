@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Web.Controllers.Users
 {
@@ -18,7 +20,7 @@ namespace Web.Controllers.Users
 
         [HttpPost]
         //IActionResult é mais genérico e conseguimos retornar tanto o Unauthorized, quanto o Ok.
-        public IActionResult Create(UserRequest request)
+        public IActionResult Create(UsersRequest request)
         {
             var response = _usersService.Create(
                 request.Name,
@@ -37,7 +39,7 @@ namespace Web.Controllers.Users
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] UserRequest request)
+        public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
         {
           var modifiedUser = _usersService.GetById(id);
             if (modifiedUser == null)
@@ -83,6 +85,26 @@ namespace Web.Controllers.Users
             user.RemovedAt = DateTime.Now;
             _usersService.Modify(user);
             return Ok("Usuario " + user.Name + " removido com sucesso");
+        }
+
+        [HttpGet()]
+        public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
+        {
+            var user = _usersService.GetAll(x =>
+            {
+                bool matches = true;
+                if (model.TryGetValue("name", out string name))
+                {
+                    matches = matches && x.Name == name;
+                }
+                return matches;
+            });
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user.OrderBy(x => x.Name));
         }
     }
 }

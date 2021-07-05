@@ -21,7 +21,7 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ProviderConnectionString": "User ID=postgres;Password=postgres;Server=localhost;Port=5432;Database=ApiCadastro"
+        "ConnectionString": "User ID=postgres;Password=postgres;Server=localhost;Port=5432;Database=ApiCadastro"
       }
     }
   }
