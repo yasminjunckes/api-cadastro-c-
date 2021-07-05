@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Domain.DTO;
 using Domain.Entities;
 
@@ -17,5 +18,7 @@ namespace Domain.Interfaces
         User GetById(Guid id);
 
         void Modify(User user);
+
+        IEnumerable<User> GetAll(Func<User, bool> predicate);
     }
 }
