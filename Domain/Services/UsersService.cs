@@ -2,6 +2,7 @@ using System;
 using Domain.Entities;
 using Domain.DTO;
 using Domain.Interfaces;
+using System.Collections.Generic;
 
 namespace Domain.Services
 {
@@ -41,6 +42,11 @@ namespace Domain.Services
         public void Modify(User user)
         {
             _usersRepository.Modify(user);
+        }
+
+        public IEnumerable<User> GetAll(Func<User, bool> predicate)
+        {
+            return _usersRepository.GetAll(predicate);
         }
     }
 }

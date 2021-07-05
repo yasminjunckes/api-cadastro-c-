@@ -7,12 +7,12 @@ namespace Domain.Entities
 {
     public class User : Entity
     {
-        public string Name { get; protected set; } //Validar
-        public string PersonalDocument { get; protected set; } //Validar
-        public string BirthDate { get; protected set; }
-        public string Email { get; protected set; } //Validar
-        public string Phone { get; protected set; } //Validar
-        public DateTime? RemovedAt {get; protected set; } = null;
+        public string Name { get; set; } //Validar
+        public string PersonalDocument { get; set; } //Validar
+        public string BirthDate { get; set; }
+        public string Email { get; set; } //Validar
+        public string Phone { get; set; } //Validar
+        public DateTime? RemovedAt {get; set; } = null;
         
         // public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
 
