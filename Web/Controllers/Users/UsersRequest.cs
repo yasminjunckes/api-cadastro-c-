@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Web.Controllers.Users
 {
-    public class UserRequest
+    public class UsersRequest
     {
         public string Name { get; set; }
         public string PersonalDocument { get; set; }
@@ -12,6 +12,6 @@ namespace Web.Controllers.Users
         public string Phone { get; set; }
         public DateTime? RemovedAt {get; set; } = null;
         
-        // public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
+        //public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
     }
 }
