@@ -20,7 +20,7 @@ namespace Web.Controllers.Users
 
         [HttpPost]
         //IActionResult é mais genérico e conseguimos retornar tanto o Unauthorized, quanto o Ok.
-        public IActionResult Create(UserRequest request)
+        public IActionResult Create(UsersRequest request)
         {
             var response = _usersService.Create(
                 request.Name,
@@ -38,49 +38,25 @@ namespace Web.Controllers.Users
                 return Ok();      
         }
 
-        // [HttpPut("{id}")]
-        // public IActionResult UpdateUser(Guid id, [FromBody] CreateUserRequest request)
-        // {
-        //     StringValues userId;
-        //     if (!Request.Headers.TryGetValue("UserId", out userId))
-        //     {
-        //         return Unauthorized();
-        //     }
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
+        {
+          var modifiedUser = _usersService.GetById(id);
+            if (modifiedUser == null)
+            {
+                return NotFound();
+            }
 
-        //     var user = _usersService.GetById(Guid.Parse(userId));
+            modifiedUser.Name = request.Name;
+            modifiedUser.PersonalDocument = request.PersonalDocument;
+            modifiedUser.Email = request.Email;
+            modifiedUser.Phone = request.Phone;
+            modifiedUser.BirthDate = request.BirthDate;
 
-        //     if (user == null)
-        //     {
-        //         return Unauthorized();
-        //     }
-        //     if (user.CPF != request.CPF)
-        //     {
-        //         return Unauthorized();
-        //     }
+            _usersService.Modify(modifiedUser);
+            return Ok("Usuario alterado com sucesso");
 
-        //     var modifiedUser = _usersService.GetById(id);
-        //     if (modifiedUser == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     modifiedUser.Name = request.Name;
-        //     modifiedUser.CPF = request.CPF;
-        //     modifiedUser.Email = request.Email;
-        //     modifiedUser.Phone = request.Phone;
-        //     modifiedUser.State = request.State;
-        //     modifiedUser.City = request.City;
-        //     modifiedUser.District = request.District;
-        //     modifiedUser.ZipCode = request.ZipCode;
-        //     modifiedUser.HouseNumber = request.HouseNumber;
-        //     modifiedUser.AddressComplement = request.AddressComplement;
-        //     modifiedUser.Profile = request.Profile;
-        //     modifiedUser.Password = request.Password;
-
-        //     _usersService.Modify(modifiedUser);
-        //     return NoContent();
-
-        // }
+        }
 
 
 
@@ -95,6 +71,20 @@ namespace Web.Controllers.Users
             }
 
             return Ok(user);
+        }  
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var user = _usersService.GetById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.RemovedAt = DateTime.Now;
+            _usersService.Modify(user);
+            return Ok("Usuario " + user.Name + " removido com sucesso");
         }
 
         [HttpGet()]
