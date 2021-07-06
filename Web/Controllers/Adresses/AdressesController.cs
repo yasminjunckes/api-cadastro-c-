@@ -40,32 +40,10 @@ namespace Web.Controllers.Adresses
             return Ok();
         }
 
-        //[HttpPut("{id}")]
-        //public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
-        //{
-        //    var modifiedUser = _usersService.GetById(id);
-        //    if (modifiedUser == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    modifiedUser.Name = request.Name;
-        //    modifiedUser.PersonalDocument = request.PersonalDocument;
-        //    modifiedUser.Email = request.Email;
-        //    modifiedUser.Phone = request.Phone;
-        //    modifiedUser.BirthDate = request.BirthDate;
-
-        //    _usersService.Modify(modifiedUser);
-        //    return Ok("Usuario alterado com sucesso");
-
-        //}
-
-
-
         [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        public IActionResult GetByUserId(Guid id)
         {
-            var adress = _adressesService.GetById(id);
+            var adress = _adressesService.GetAdresses(id);
 
             if (adress == null)
             {

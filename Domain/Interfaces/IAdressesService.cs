@@ -23,6 +23,8 @@ namespace Domain.Interfaces
 
         Adress GetAdress(string postalCode);
 
+        IEnumerable<Adress> GetAdresses(Guid userId);
+
         void Delete(Guid id);
     }
 }
