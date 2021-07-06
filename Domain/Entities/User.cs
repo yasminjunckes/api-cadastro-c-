@@ -26,6 +26,16 @@ namespace Domain.Entities
             Phone = phone;
         }
 
+        public User(Guid id, string name, string personalDocument, string birthDate, string email, string phone)
+        {
+            Id = id;
+            Name = name;
+            PersonalDocument = personalDocument;
+            BirthDate = birthDate;
+            Email = email;
+            Phone = phone;
+        }
+
         protected bool ValidateName()
         {
             if (string.IsNullOrEmpty(Name))

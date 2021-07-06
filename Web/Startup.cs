@@ -31,8 +31,8 @@ namespace Web
         {
             services.AddRazorPages();
 
-            var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
-            services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql(connectionString));
+            //var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+            services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql("User ID=postgres;Password=postgres;Server=localhost;Port=5432;Database=ApiCadastro"));
             
             services.AddScoped(typeof (IGenericRepository<>), typeof (GenericRepository<>));
             services.AddScoped<IUsersRepository, UsersRepository>();
