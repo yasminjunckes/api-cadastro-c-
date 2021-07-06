@@ -42,7 +42,8 @@ namespace Domain.Services
             // }
             // return new adressDTO(adressValidation.errors);
 
-             return new AdressDTO(adress.Id);
+            _adressesRepository.Add(adress);
+            return new AdressDTO(adress.Id);
         }
 
         public Adress GetAdress(string postaslCode)
