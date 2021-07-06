@@ -23,14 +23,16 @@ namespace Web.Controllers.Adresses
         [HttpPost]
         public IActionResult Create(AdressesRequest request)
         {
+            var viaCep = _adressesService.GetAdress(request.PostalCode);
+
             var response = _adressesService.Create(
-                request.Line1,
+                viaCep.Line1,
                 request.Line2,
                 request.Number,
                 request.PostalCode,
-                request.City,
-                request.State,
-                request.District,
+                viaCep.City,
+                viaCep.State,
+                viaCep.District,
                 request.Principal,
                 request.UserId
                 );
