@@ -75,38 +75,31 @@ namespace Web.Controllers.Adresses
             return Ok(adress);
         }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(Guid id)
-        //{
-        //    var user = _usersService.GetById(id);
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            _adressesService.Delete(id);
+            return Ok("Endereço deletado com sucesso.");
+        }
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    user.RemovedAt = DateTime.Now;
-        //    _usersService.Modify(user);
-        //    return Ok("Usuario " + user.Name + " removido com sucesso");
-        //}
+            //[HttpGet()]
+            //public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
+            //{
+            //    var user = _usersService.GetAll(x =>
+            //    {
+            //        bool matches = true;
+            //        if (model.TryGetValue("name", out string name))
+            //        {
+            //            matches = matches && x.Name == name;
+            //        }
+            //        return matches;
+            //    });
 
-        //[HttpGet()]
-        //public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
-        //{
-        //    var user = _usersService.GetAll(x =>
-        //    {
-        //        bool matches = true;
-        //        if (model.TryGetValue("name", out string name))
-        //        {
-        //            matches = matches && x.Name == name;
-        //        }
-        //        return matches;
-        //    });
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(user.OrderBy(x => x.Name));
-        //}
-    }
+            //    if (user == null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    return Ok(user.OrderBy(x => x.Name));
+            //}
+        }
 }

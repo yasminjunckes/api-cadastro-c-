@@ -78,6 +78,12 @@ namespace Domain.Services
             return _adressesRepository.Get(id);
         }
 
+        public void Delete(Guid id)
+        {
+            var deletedAdress = _adressesRepository.Get(id);
+            _adressesRepository.Remove(deletedAdress);
+        }
+
         // public void Modify(Adress adress)
         // {
         //     _adressesRepository.Modify(adress);
