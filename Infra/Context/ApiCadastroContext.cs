@@ -22,12 +22,12 @@ namespace Infra.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = Environment.GetEnvironmentVariable("ProviderConnectionString");
+            //var connectionString = Environment.GetEnvironmentVariable("ProviderConnectionString");
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
                     .UseLazyLoadingProxies()
-                    .UseNpgsql(connectionString);
+                    .UseNpgsql("User ID=postgres;Password=postgres;Server=localhost;Port=5432;Database=ApiCadastro");
             }
         }
     }

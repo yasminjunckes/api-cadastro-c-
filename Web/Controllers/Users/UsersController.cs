@@ -9,7 +9,7 @@ using System.Linq;
 namespace Web.Controllers.Users
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/v1/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
