@@ -3,15 +3,17 @@ using System;
 using Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infra.Migrations
 {
     [DbContext(typeof(ApiCadastroContext))]
-    partial class ApiCadastroContextModelSnapshot : ModelSnapshot
+    [Migration("20210706114218_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Domain.Entities.Address", b =>
+            modelBuilder.Entity("Domain.Entities.Adress", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,12 +64,12 @@ namespace Infra.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Adress");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("871b1fee-e901-44e8-a78d-783463c93a76"),
+                            Id = new Guid("1c8fd5c0-c01f-4d4e-9136-888503c60942"),
                             City = "City",
                             District = "District",
                             Line1 = "line1",
@@ -75,7 +77,7 @@ namespace Infra.Migrations
                             Number = 100,
                             PostalCode = "89055050",
                             Principal = true,
-                            State = "SC",
+                            State = "State",
                             UserId = new Guid("f7777df5-0c96-41c1-b0d3-e4a1d5ed8fce")
                         });
                 });
@@ -130,7 +132,7 @@ namespace Infra.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.Address", b =>
+            modelBuilder.Entity("Domain.Entities.Adress", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
