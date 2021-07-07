@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Web.Controllers.Users
 {
-    public class AdressesRequest
+    public class AddressesRequest
     {
         public string Line1 { get; set; } 
         public string Line2 { get; set; } 

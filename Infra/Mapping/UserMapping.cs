@@ -11,6 +11,7 @@ namespace Infra.Mapping
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasData(new User(
+                Guid.Parse("f7777df5-0c96-41c1-b0d3-e4a1d5ed8fce"),
                 "User Test",
                 "24068108013",
                 "01/01/2000",

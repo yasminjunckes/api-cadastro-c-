@@ -58,7 +58,7 @@ namespace Infra.Repositories
         public void Remove(TEntity entity)
         {
             {
-                _db.Entry(entity).State = EntityState.Deleted;
+                _db.Remove(entity);
                 _db.SaveChanges();
             }
         }
