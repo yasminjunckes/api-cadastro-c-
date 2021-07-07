@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Domain.Entities
 {
-    public class Adress : Entity
+    public class Address : Entity
     {
         public string Line1 { get; protected set; } 
         public string Line2 { get; protected set; } 
@@ -16,7 +16,7 @@ namespace Domain.Entities
         public Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
 
-        public Adress(string line1, string postalCode, string city, string state, string district)
+        public Address(string line1, string postalCode, string city, string state, string district)
         {
             Line1 = line1;
             PostalCode = postalCode;
@@ -25,7 +25,7 @@ namespace Domain.Entities
             District = district;
         }
 
-        public Adress(string line1, string line2, int number, string postalCode, string city, string state, string district, bool principal, Guid userId)
+        public Address(string line1, string line2, int number, string postalCode, string city, string state, string district, bool principal, Guid userId)
         {
             Id = Guid.NewGuid();
             Line1 = line1;

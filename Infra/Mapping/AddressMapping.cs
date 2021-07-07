@@ -6,10 +6,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Mapping
 {
-    public class AdressMapping: IEntityTypeConfiguration<Adress>
+    public class AddressMapping: IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Adress> builder)
+        public void Configure(EntityTypeBuilder<Address> builder)
         {
+            builder.HasData(new Address(
+                "line1",
+                "line2",
+                100,
+                "89055050",
+                "City",
+                "SC",
+                "District",
+                true,
+                Guid.Parse("f7777df5-0c96-41c1-b0d3-e4a1d5ed8fce")
+                ));
+
             builder
                 .Property(x => x.Line1)
                 .HasMaxLength(100);

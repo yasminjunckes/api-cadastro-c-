@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace Domain.DTO
 {
-    public class AdressDTO
+    public class AddressDTO
     {
         public Guid Id{ get; private set; }
         public IList<string> Errors{ get; set; }
         public bool IsValid { get; set; }
 
-        public AdressDTO(Guid id)
+        public AddressDTO(Guid id)
         {
             Id = id;
             IsValid = true;
         }
 
-        public AdressDTO(IList<string> errors)
+        public AddressDTO(IList<string> errors)
         {
             Errors = errors;
             IsValid = false;
