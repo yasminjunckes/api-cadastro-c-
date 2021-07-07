@@ -9,16 +9,16 @@ using Newtonsoft.Json.Linq;
 
 namespace Domain.Services
 {
-    public class AdressesService : IAdressesService
+    public class AddressesService : IAddressesService
     {
-        private readonly IAdressesRepository _adressesRepository;
+        private readonly IAddressesRepository _addressesRepository;
 
-        public AdressesService(IAdressesRepository adressesRepository)
+        public AddressesService(IAddressesRepository addressesRepository)
         {
-            _adressesRepository = adressesRepository;
+            _addressesRepository = addressesRepository;
         }
 
-        public AdressDTO Create(
+        public AddressDTO Create(
             string line1,
             string line2,
             int number,
@@ -27,26 +27,26 @@ namespace Domain.Services
             string state,
             string district,
             bool principal,
-            Guid adressId
+            Guid addressId
         )
         {
-            var adress = new Adress(line1, line2, number, postalCode, city, state, district, principal, adressId);
+            var address = new Address(line1, line2, number, postalCode, city, state, district, principal, addressId);
             // TODO = validação de endereço
             //
-            // var adressValidation = adress.Validate();
+            // var addressValidation = address.Validate();
 
-            // if (adressValidation.isValid)
+            // if (addressValidation.isValid)
             // {
-            //     _adressesRepository.Add(adress);
-            //     return new adressDTO(adress.Id);
+            //     _addressesRepository.Add(address);
+            //     return new addressDTO(address.Id);
             // }
-            // return new adressDTO(adressValidation.errors);
+            // return new addressDTO(addressValidation.errors);
 
-            _adressesRepository.Add(adress);
-            return new AdressDTO(adress.Id);
+            _addressesRepository.Add(address);
+            return new AddressDTO(address.Id);
         }
 
-        public Adress GetAdress(string postaslCode)
+        public Address GetAddress(string postaslCode)
         {
            WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
 
@@ -68,30 +68,30 @@ namespace Domain.Services
            string state = (string)json.GetValue("uf");
            string district = (string)json.GetValue("bairro");
 
-           Adress adress = new Adress(line1, postaslCode, city, state, district);
+           Address address = new Address(line1, postaslCode, city, state, district);
 
-           return adress;        
+           return address;        
         }
             
-        public Adress GetById(Guid id)
+        public Address GetById(Guid id)
         {
-            return _adressesRepository.Get(id);
+            return _addressesRepository.Get(id);
         }
 
-        public IEnumerable<Adress> GetAdresses(Guid userId)
+        public IEnumerable<Address> GetAddresses(Guid userId)
         {
-            return _adressesRepository.GetByUserId(userId);
+            return _addressesRepository.GetByUserId(userId);
         }
 
         public void Delete(Guid id)
         {
-            var deletedAdress = _adressesRepository.Get(id);
-            _adressesRepository.Remove(deletedAdress);
+            var deletedAddress = _addressesRepository.Get(id);
+            _addressesRepository.Remove(deletedAddress);
         }
 
-        // public IEnumerable<Adress> GetAll(Func<Adress, bool> predicate)
+        // public IEnumerable<Address> GetAll(Func<Address, bool> predicate)
         // {
-        //     return _adressesRepository.GetAll(predicate);
+        //     return _addressesRepository.GetAll(predicate);
         // }
     }
 }

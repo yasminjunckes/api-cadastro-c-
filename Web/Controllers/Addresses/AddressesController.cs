@@ -8,24 +8,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Controllers.Users;
 
-namespace Web.Controllers.Adresses
+namespace Web.Controllers.Addresses
 {
     [ApiController]
-    [Route("[controller]")]
-    public class AdressesController : ControllerBase
+    [Route("/v1/[controller]")]
+    public class AddressesController : ControllerBase
     {
-        private readonly IAdressesService _adressesService;
-        public AdressesController(IAdressesService AdressService)
+        private readonly IAddressesService _addressesService;
+        public AddressesController(IAddressesService AddressService)
         {
-            _adressesService = AdressService;
+            _addressesService = AddressService;
         }
 
         [HttpPost]
-        public IActionResult Create(AdressesRequest request)
+        public IActionResult Create(AddressesRequest request)
         {
-            var viaCep = _adressesService.GetAdress(request.PostalCode);
+            var viaCep = _addressesService.GetAddress(request.PostalCode);
 
-            var response = _adressesService.Create(
+            var response = _addressesService.Create(
                 viaCep.Line1,
                 request.Line2,
                 request.Number,
@@ -43,20 +43,20 @@ namespace Web.Controllers.Adresses
         [HttpGet("{id}")]
         public IActionResult GetByUserId(Guid id)
         {
-            var adress = _adressesService.GetAdresses(id);
+            var address = _addressesService.GetAddresses(id);
 
-            if (adress == null)
+            if (address == null)
             {
                 return NotFound();
             }
 
-            return Ok(adress);
+            return Ok(address);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            _adressesService.Delete(id);
+            _addressesService.Delete(id);
             return Ok("Endereço deletado com sucesso.");
         }
 

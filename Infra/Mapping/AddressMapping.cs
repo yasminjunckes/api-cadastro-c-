@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Mapping
 {
-    public class AdressMapping: IEntityTypeConfiguration<Adress>
+    public class AddressMapping: IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Adress> builder)
+        public void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.HasData(new Adress(
+            builder.HasData(new Address(
                 "line1",
                 "line2",
                 100,

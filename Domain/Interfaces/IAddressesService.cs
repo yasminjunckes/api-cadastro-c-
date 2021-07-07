@@ -5,9 +5,9 @@ using Domain.Entities;
 
 namespace Domain.Interfaces
 {
-    public interface IAdressesService
+    public interface IAddressesService
     {
-        AdressDTO Create(
+        AddressDTO Create(
             string line1,
             string line2,
             int number,
@@ -19,11 +19,11 @@ namespace Domain.Interfaces
             Guid userId
         );
 
-        Adress GetById(Guid id);
+        Address GetById(Guid id);
 
-        Adress GetAdress(string postalCode);
+        Address GetAddress(string postalCode);
 
-        IEnumerable<Adress> GetAdresses(Guid userId);
+        IEnumerable<Address> GetAddresses(Guid userId);
 
         void Delete(Guid id);
     }

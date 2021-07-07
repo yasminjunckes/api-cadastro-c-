@@ -14,7 +14,7 @@ namespace Domain.Entities
         public string Phone { get; set; } //Validar
         public DateTime? RemovedAt {get; set; } = null;
         
-        // public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
+        // public list<Address> Addresses { get; protected set;}  ---> Incluir no construtor depois
 
         public User(string name, string personalDocument, string birthDate, string email, string phone)
         {

@@ -7,18 +7,18 @@ using System.Linq;
 
 namespace Infra.Repositories
 {
-    public class AdressesRepository : GenericRepository<Adress>, IAdressesRepository
+    public class AddressesRepository : GenericRepository<Address>, IAddressesRepository
     {
         private readonly ApiCadastroContext _db;
-        public AdressesRepository(ApiCadastroContext dbContext) : base(dbContext)
+        public AddressesRepository(ApiCadastroContext dbContext) : base(dbContext)
         {
             _db = dbContext;
         }
 
-        public IEnumerable<Adress> GetByUserId(Guid id)
+        public IEnumerable<Address> GetByUserId(Guid id)
         {
             {
-                return _db.Set<Adress>().Where(x => x.UserId == id).ToArray();
+                return _db.Set<Address>().Where(x => x.UserId == id).ToArray();
             }
         }
 

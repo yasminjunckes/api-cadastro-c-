@@ -37,8 +37,8 @@ namespace Web
             services.AddScoped(typeof (IGenericRepository<>), typeof (GenericRepository<>));
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUsersService, UsersService>();
-            services.AddScoped<IAdressesRepository, AdressesRepository>();
-            services.AddScoped<IAdressesService, AdressesService>();
+            services.AddScoped<IAddressesRepository, AddressesRepository>();
+            services.AddScoped<IAddressesService, AddressesService>();
             services.AddCors();
         }
 
