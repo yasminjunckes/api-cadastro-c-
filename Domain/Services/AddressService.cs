@@ -48,31 +48,39 @@ namespace Domain.Services
 
         public Address GetAddress(string postaslCode)
         {
-           WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
+            WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
 
-           request.Credentials = CredentialCache.DefaultCredentials;
-           HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-           Stream dataStream = response.GetResponseStream();
-           StreamReader reader = new StreamReader(dataStream);
-           string responseFromServer = reader.ReadToEnd();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
 
-           reader.Close();
-           dataStream.Close();
-           response.Close();
+            reader.Close();
+            dataStream.Close();
+            response.Close();
 
-           JObject json = JObject.Parse(responseFromServer);
+            JObject json = JObject.Parse(responseFromServer);
 
-           string line1 = (string)json.GetValue("logradouro");
-           string city = (string)json.GetValue("localidade");
-           string state = (string)json.GetValue("uf");
-           string district = (string)json.GetValue("bairro");
+            //var erro = json.GetValue("erro");
 
-           Address address = new Address(line1, postaslCode, city, state, district);
+            //if (erro != null)
+            //{
+            //    Address addressEmpty = new Address();
+            //    return addressEmpty;
+            //}
 
-           return address;        
+            string line1 = (string)json.GetValue("logradouro");
+            string city = (string)json.GetValue("localidade");
+            string state = (string)json.GetValue("uf");
+            string district = (string)json.GetValue("bairro");
+
+            Address address = new Address(line1, postaslCode, city, state, district);
+
+            return address;
         }
-            
+
         public Address GetById(Guid id)
         {
             return _addressesRepository.Get(id);

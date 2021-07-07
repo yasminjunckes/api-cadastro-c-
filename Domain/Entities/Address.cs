@@ -16,6 +16,10 @@ namespace Domain.Entities
         public Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
 
+        public Address()
+        {
+        }
+
         public Address(string line1, string postalCode, string city, string state, string district)
         {
             Line1 = line1;

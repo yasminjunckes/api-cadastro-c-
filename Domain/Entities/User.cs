@@ -129,7 +129,7 @@ namespace Domain.Entities
             return false;
         }
 
-        protected bool  ValidatePhone()
+        protected bool ValidatePhone()
         {
             if (Phone != null && Phone != "")
             {
