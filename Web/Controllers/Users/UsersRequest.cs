@@ -12,6 +12,6 @@ namespace Web.Controllers.Users
         public string Phone { get; set; }
         public DateTime? RemovedAt {get; set; } = null;
         
-        //public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
+        //public list<Address> Addresses { get; protected set;}  ---> Incluir no construtor depois
     }
 }
