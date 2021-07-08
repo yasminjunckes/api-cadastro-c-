@@ -1,8 +1,7 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Interfaces;
-using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,18 +29,18 @@ namespace Web.Controllers.Users
                 request.Phone
                 );
 
-                if (!response.IsValid)
-                {
-                    return BadRequest(response.Errors);
-                }
+            if (!response.IsValid)
+            {
+                return BadRequest(response.Errors);
+            }
 
-                return Ok();      
+            return Ok();
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
         {
-          var modifiedUser = _usersService.GetById(id);
+            var modifiedUser = _usersService.GetById(id);
             if (modifiedUser == null)
             {
                 return NotFound();
@@ -65,13 +64,14 @@ namespace Web.Controllers.Users
         {
             var user = _usersService.GetById(id);
 
-            if (user == null)
+            if (user == null || user.RemovedAt != null)
             {
                 return NotFound();
             }
 
+
             return Ok(user);
-        }  
+        }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
@@ -90,7 +90,7 @@ namespace Web.Controllers.Users
         [HttpGet()]
         public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
         {
-            var user = _usersService.GetAll(x =>
+            var users = _usersService.GetAll(x =>
             {
                 bool matches = true;
                 if (model.TryGetValue("name", out string name))
@@ -100,11 +100,30 @@ namespace Web.Controllers.Users
                 return matches;
             });
 
-            if (user == null)
+            if (users == null)
             {
                 return NotFound();
             }
-            return Ok(user.OrderBy(x => x.Name));
+
+            var userList = new List<User>();
+            foreach (var user in users)
+            {
+                if (user.RemovedAt == null)
+                {
+                    userList.Add(user);
+                }
+            }
+
+            double page = Math.Ceiling(userList.Count() / 5.0);
+            var result = new
+            {
+                users = userList.OrderBy(x => x.Name),
+                total = userList.Count(),
+                pages = page,
+                actual = 1
+            };
+
+            return Ok(result);
         }
     }
 }
