@@ -1,11 +1,6 @@
-﻿
-using Domain.Entities;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Web.Controllers.Users;
 
 namespace Web.Controllers.Addresses
@@ -60,24 +55,24 @@ namespace Web.Controllers.Addresses
             return Ok("Endereço deletado com sucesso.");
         }
 
-            //[HttpGet()]
-            //public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
-            //{
-            //    var user = _usersService.GetAll(x =>
-            //    {
-            //        bool matches = true;
-            //        if (model.TryGetValue("name", out string name))
-            //        {
-            //            matches = matches && x.Name == name;
-            //        }
-            //        return matches;
-            //    });
+        //[HttpGet()]
+        //public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
+        //{
+        //    var user = _usersService.GetAll(x =>
+        //    {
+        //        bool matches = true;
+        //        if (model.TryGetValue("name", out string name))
+        //        {
+        //            matches = matches && x.Name == name;
+        //        }
+        //        return matches;
+        //    });
 
-            //    if (user == null)
-            //    {
-            //        return NotFound();
-            //    }
-            //    return Ok(user.OrderBy(x => x.Name));
-            //}
-        }
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(user.OrderBy(x => x.Name));
+        //}
+    }
 }
