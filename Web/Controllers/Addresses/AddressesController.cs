@@ -1,11 +1,6 @@
-﻿
-using Domain.Entities;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Web.Controllers.Users;
 
 namespace Web.Controllers.Addresses
