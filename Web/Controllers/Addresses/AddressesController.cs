@@ -37,7 +37,12 @@ namespace Web.Controllers.Addresses
                 request.UserId
                 );
 
-            return Ok();
+            request.Line1 = viaCep.Line1;
+            request.City = viaCep.City;
+            request.State = viaCep.State;
+            request.District = viaCep.District;
+
+            return Ok(request);
         }
 
         [HttpGet("{id}")]
@@ -59,25 +64,5 @@ namespace Web.Controllers.Addresses
             _addressesService.Delete(id);
             return Ok("Endereço deletado com sucesso.");
         }
-
-            //[HttpGet()]
-            //public IActionResult GetByParameter([FromQuery] Dictionary<string, string> model)
-            //{
-            //    var user = _usersService.GetAll(x =>
-            //    {
-            //        bool matches = true;
-            //        if (model.TryGetValue("name", out string name))
-            //        {
-            //            matches = matches && x.Name == name;
-            //        }
-            //        return matches;
-            //    });
-
-            //    if (user == null)
-            //    {
-            //        return NotFound();
-            //    }
-            //    return Ok(user.OrderBy(x => x.Name));
-            //}
-        }
+    }
 }
