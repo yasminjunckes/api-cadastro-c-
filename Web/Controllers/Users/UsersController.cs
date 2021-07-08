@@ -33,8 +33,8 @@ namespace Web.Controllers.Users
             {
                 return BadRequest(response.Errors);
             }
-
-            return Ok();
+            
+            return Ok(request);      
         }
 
         [HttpPut("{id}")]
@@ -53,7 +53,7 @@ namespace Web.Controllers.Users
             modifiedUser.BirthDate = request.BirthDate;
 
             _usersService.Modify(modifiedUser);
-            return Ok("Usuario alterado com sucesso");
+            return Ok(modifiedUser);
 
         }
 
