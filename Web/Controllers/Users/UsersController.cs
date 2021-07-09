@@ -1,7 +1,6 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,17 +68,17 @@ namespace Web.Controllers.Users
             //    email = user.Email,
             //    phone = user.Phone,
             //    addresses = userAddresses
+
             //};
 
             request.Address.Line1 = viaCep.Line1;
             request.Address.City = viaCep.City;
             request.Address.State = viaCep.State;
             request.Address.District = viaCep.District;
-            request.Address.Id = firstAddress.UserId;
+            request.Address.Id = firstAddress.Id;
             request.Address.UserId = firstAddress.UserId;
 
             return Ok(request);
-
         }
 
         [HttpPut("{id}")]
