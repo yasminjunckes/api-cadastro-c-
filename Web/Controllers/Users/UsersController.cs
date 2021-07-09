@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,21 @@ namespace Web.Controllers.Users
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
-        public UsersController(IUsersService usersService)
+        private readonly IAddressesService _addressesService;
+        public UsersController(IUsersService usersService, IAddressesService AddressService)
         {
             _usersService = usersService;
+            _addressesService = AddressService;
         }
 
         [HttpPost]
         //IActionResult é mais genérico e conseguimos retornar tanto o Unauthorized, quanto o Ok.
         public IActionResult Create(UsersRequest request)
         {
-            var response = _usersService.Create(
+            Guid userId = Guid.NewGuid();
+
+            var userResponse = _usersService.Create(
+                userId,
                 request.Name,
                 request.PersonalDocument,
                 request.BirthDate,
@@ -29,12 +35,51 @@ namespace Web.Controllers.Users
                 request.Phone
                 );
 
-            if (!response.IsValid)
+            if (!userResponse.IsValid)
             {
-                return BadRequest(response.Errors);
+                return BadRequest(userResponse.Errors);
             }
-            
-            return Ok(request);      
+
+            var viaCep = _addressesService.GetAddress(request.Address.PostalCode);
+
+            var addressResponse = _addressesService.Create(
+                viaCep.Line1,
+                request.Address.Line2,
+                request.Address.Number,
+                request.Address.PostalCode,
+                viaCep.City,
+                viaCep.State,
+                viaCep.District,
+                request.Address.Principal,
+                userId
+                );
+
+            IEnumerable<Address> userAddresses = _addressesService.GetAddresses(userId);
+            Address firstAddress = userAddresses.First();
+
+            //Forma alternativa de retornar o usuario com endereço
+
+            //User user = _usersService.GetById(userId);
+            //var response = new
+            //{
+            //    id = user.Id,
+            //    name = user.Name,
+            //    personalDocument = user.PersonalDocument,
+            //    birthDate = user.BirthDate,
+            //    email = user.Email,
+            //    phone = user.Phone,
+            //    addresses = userAddresses
+            //};
+
+            request.Address.Line1 = viaCep.Line1;
+            request.Address.City = viaCep.City;
+            request.Address.State = viaCep.State;
+            request.Address.District = viaCep.District;
+            request.Address.Id = firstAddress.UserId;
+            request.Address.UserId = firstAddress.UserId;
+
+            return Ok(request);
+
         }
 
         [HttpPut("{id}")]
