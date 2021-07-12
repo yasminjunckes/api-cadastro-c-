@@ -21,6 +21,11 @@ namespace Web.Controllers.Addresses
             Guid addressId = Guid.NewGuid();
             var viaCep = _addressesService.GetAddress(request.PostalCode);
 
+            if (viaCep.City == null)
+            {
+                return BadRequest("Cep inválido");
+            }
+
             var response = _addressesService.Create(
                 viaCep.Line1,
                 request.Line2,

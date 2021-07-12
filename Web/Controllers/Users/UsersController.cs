@@ -39,7 +39,17 @@ namespace Web.Controllers.Users
                 return BadRequest(userResponse.Errors);
             }
 
+            if (request.Address == null || request.Address.PostalCode == "") 
+            {
+                return Ok(_usersService.GetById(userId));
+            }
+
             var viaCep = _addressesService.GetAddress(request.Address.PostalCode);
+
+            if (viaCep.City == null)
+            {
+                return BadRequest("Usuário cadastrado com sucesso. Erro ao cadastrar o endereço: cep inválido!");
+            }
 
             var addressResponse = _addressesService.Create(
                 viaCep.Line1,
@@ -78,19 +88,20 @@ namespace Web.Controllers.Users
         [HttpPut("{id}")]
         public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
         {
-            var modifiedUser = _usersService.GetById(id);
-            if (modifiedUser == null)
+            var user = _usersService.GetById(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            modifiedUser.Name = request.Name;
-            modifiedUser.PersonalDocument = request.PersonalDocument;
-            modifiedUser.Email = request.Email;
-            modifiedUser.Phone = request.Phone;
-            modifiedUser.BirthDate = request.BirthDate;
+            user.Name = request.Name;
+            user.PersonalDocument = request.PersonalDocument;
+            user.Email = request.Email;
+            user.Phone = request.Phone;
+            user.BirthDate = request.BirthDate;
 
-            _usersService.Modify(modifiedUser);
+            _usersService.Modify(user);
+            var modifiedUser = _usersService.GetById(id);
             return Ok(modifiedUser);
 
         }
