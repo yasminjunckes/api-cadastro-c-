@@ -14,7 +14,7 @@ namespace Domain.Entities
         public string District {get; protected set; }
         public bool Principal {get; protected set; } // obrigatorio (validar se apenas um é o principal)
         public Guid UserId { get; protected set; }
-        public virtual User User { get; protected set; }
+        public virtual User User { get; set; }
 
         public Address(string line1, string postalCode, string city, string state, string district)
         {

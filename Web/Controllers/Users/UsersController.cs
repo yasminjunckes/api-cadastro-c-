@@ -54,31 +54,25 @@ namespace Web.Controllers.Users
                 );
 
             IEnumerable<Address> userAddresses = _addressesService.GetAddresses(userId);
-            Address firstAddress = userAddresses.First();
 
-            //Forma alternativa de retornar o usuario com endereço
+            User user = _usersService.GetById(userId);
 
-            //User user = _usersService.GetById(userId);
-            //var response = new
-            //{
-            //    id = user.Id,
-            //    name = user.Name,
-            //    personalDocument = user.PersonalDocument,
-            //    birthDate = user.BirthDate,
-            //    email = user.Email,
-            //    phone = user.Phone,
-            //    addresses = userAddresses
+            foreach (var item in userAddresses)
+            {
+                item.User = null;
+            }
 
-            //};
-
-            request.Address.Line1 = viaCep.Line1;
-            request.Address.City = viaCep.City;
-            request.Address.State = viaCep.State;
-            request.Address.District = viaCep.District;
-            request.Address.Id = firstAddress.Id;
-            request.Address.UserId = firstAddress.UserId;
-
-            return Ok(request);
+            var response = new
+            {
+                id = user.Id,
+                name = user.Name,
+                personalDocument = user.PersonalDocument,
+                birthDate = user.BirthDate,
+                email = user.Email,
+                phone = user.Phone,
+                addresses = userAddresses
+            };
+            return Ok(response);
         }
 
         [HttpPut("{id}")]

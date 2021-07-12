@@ -15,8 +15,8 @@ namespace Web.Controllers.Addresses
             _addressesService = AddressService;
         }
 
-        [HttpPost]
-        public IActionResult Create(AddressesRequest request)
+        [HttpPost("{userId}")]
+        public IActionResult Create(Guid userId, [FromBody] AddressesRequest request)
         {
             Guid addressId = Guid.NewGuid();
             var viaCep = _addressesService.GetAddress(request.PostalCode);
@@ -30,16 +30,12 @@ namespace Web.Controllers.Addresses
                 viaCep.State,
                 viaCep.District,
                 request.Principal,
-                request.UserId
+                userId
                 );
 
-            request.Id = addressId;
-            request.Line1 = viaCep.Line1;
-            request.City = viaCep.City;
-            request.State = viaCep.State;
-            request.District = viaCep.District;
+            var address = _addressesService.GetAddresses(userId);
 
-            return Ok(request);
+            return Ok(address);
         }
 
         [HttpGet("{id}")]
