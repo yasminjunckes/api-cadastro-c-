@@ -33,7 +33,7 @@ namespace Web.Controllers.Addresses
                 userId
                 );
 
-            var address = _addressesService.GetAddresses(userId);
+            var address = _addressesService.GetById(response.Id);
 
             return Ok(address);
         }
