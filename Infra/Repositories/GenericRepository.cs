@@ -20,47 +20,35 @@ namespace Infra.Repositories
 
         public void Add(TEntity entity)
         {
-            {
-                _db.Add<TEntity>(entity);
-                _db.SaveChanges();
-            }
+            _db.Add<TEntity>(entity);
+            _db.SaveChanges();
         }
 
         public TEntity Get(Func<TEntity, bool> predicate)
         {
-            {
-                return _db.Set<TEntity>().FirstOrDefault(predicate);
-            }
+            return _db.Set<TEntity>().FirstOrDefault(predicate);
         }
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool> predicate)
         {
-            {
-                return _db.Set<TEntity>().Where(predicate).ToArray();
-            }
+            return _db.Set<TEntity>().Where(predicate).ToArray();
         }        
 
         public TEntity Get(Guid id)
         {
-            {
-                return _db.Set<TEntity>().SingleOrDefault(x => x.Id == id);
-            }
+            return _db.Set<TEntity>().SingleOrDefault(x => x.Id == id);
         }
 
         public void Modify(TEntity entity)
         {
-            {
-                _db.Entry(entity).State = EntityState.Modified;
-                _db.SaveChanges();
-            }
+            _db.Entry(entity).State = EntityState.Modified;
+            _db.SaveChanges();
         }
 
         public void Remove(TEntity entity)
         {
-            {
-                _db.Remove(entity);
-                _db.SaveChanges();
-            }
+            _db.Remove(entity);
+            _db.SaveChanges();
         }
     }
 }

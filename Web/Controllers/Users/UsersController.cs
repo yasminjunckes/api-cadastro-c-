@@ -39,7 +39,6 @@ namespace Web.Controllers.Users
             }
 
             bool principalTrue = false;
-
             foreach (var item in request.Address)
             {
                 if (item == null || item.PostalCode == "")
@@ -60,7 +59,6 @@ namespace Web.Controllers.Users
                 }
 
                 var viaCep = _addressesService.GetAddress(item.PostalCode);
-
                 if (viaCep.City == null)
                 {
                     return BadRequest("Usuário cadastrado com sucesso. Erro ao cadastrar o endereço: cep inválido:" +  item.PostalCode);
@@ -97,6 +95,7 @@ namespace Web.Controllers.Users
                 phone = user.Phone,
                 addresses = userAddresses
             };
+
             return Ok(response);
         }
 
@@ -117,6 +116,7 @@ namespace Web.Controllers.Users
 
             _usersService.Modify(user);
             var modifiedUser = _usersService.GetById(id);
+
             return Ok(modifiedUser);
         }
 
@@ -129,6 +129,7 @@ namespace Web.Controllers.Users
             {
                 return NotFound();
             }
+
             return Ok(user);
         }
 
@@ -136,13 +137,14 @@ namespace Web.Controllers.Users
         public IActionResult Delete(Guid id)
         {
             var user = _usersService.GetById(id);
-
             if (user == null)
             {
                 return NotFound();
             }
+
             user.RemovedAt = DateTime.Now;
             _usersService.Modify(user);
+
             return Ok("Usuario " + user.Name + " removido com sucesso");
         }
 
@@ -155,6 +157,14 @@ namespace Web.Controllers.Users
                 if (model.TryGetValue("name", out string name))
                 {
                     matches = matches && x.Name == name;
+                }
+                if (model.TryGetValue("personalDocument", out string personalDocument))
+                {
+                    matches = matches && x.PersonalDocument == personalDocument;
+                }
+                if (model.TryGetValue("email", out string email))
+                {
+                    matches = matches && x.Email == email;
                 }
                 return matches;
             });

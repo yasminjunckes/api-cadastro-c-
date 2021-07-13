@@ -23,10 +23,10 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
             var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             services.AddDbContext<ApiCadastroContext>(opt => opt.UseNpgsql(connectionString));
 
+            services.AddRazorPages();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUsersService, UsersService>();
@@ -37,7 +37,6 @@ namespace Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseCors("any");
             using (var db = new ApiCadastroContext())
             {
@@ -56,9 +55,7 @@ namespace Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

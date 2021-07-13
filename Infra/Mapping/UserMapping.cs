@@ -3,7 +3,6 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-
 namespace Infra.Mapping
 {
     public class UserMapping: IEntityTypeConfiguration<User>
@@ -45,6 +44,5 @@ namespace Infra.Mapping
             builder
                 .Property(x => x.RemovedAt);
         }
-
     }
 }

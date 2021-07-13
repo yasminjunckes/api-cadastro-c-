@@ -31,10 +31,10 @@ namespace Domain.Services
         )
         {
             var address = new Address(line1, line2, number, postalCode, city, state, district, principal, addressId);
+
             // TODO = validação de endereço
             //
             // var addressValidation = address.Validate();
-
             // if (addressValidation.isValid)
             // {
             //     _addressesRepository.Add(address);
@@ -43,6 +43,7 @@ namespace Domain.Services
             // return new addressDTO(addressValidation.errors);
 
             _addressesRepository.Add(address);
+
             return new AddressDTO(address.Id);
         }
 
@@ -88,10 +89,5 @@ namespace Domain.Services
             var deletedAddress = _addressesRepository.Get(id);
             _addressesRepository.Remove(deletedAddress);
         }
-
-        // public IEnumerable<Address> GetAll(Func<Address, bool> predicate)
-        // {
-        //     return _addressesRepository.GetAll(predicate);
-        // }
     }
 }

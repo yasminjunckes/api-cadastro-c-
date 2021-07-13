@@ -18,8 +18,6 @@ namespace Web.Controllers.Addresses
         [HttpPost("{userId}")]
         public IActionResult Create(Guid userId, [FromBody] AddressesRequest request)
         {
-            Guid addressId = Guid.NewGuid();
-
             if (request.Principal == true)
             {
                 var addressCheck = _addressesService.GetAddresses(userId);
@@ -34,7 +32,6 @@ namespace Web.Controllers.Addresses
             }
 
             var viaCep = _addressesService.GetAddress(request.PostalCode);
-
             if (viaCep.City == null)
             {
                 return BadRequest("Cep inválido");
@@ -61,7 +58,6 @@ namespace Web.Controllers.Addresses
         public IActionResult GetByUserId(Guid id)
         {
             var address = _addressesService.GetAddresses(id);
-
             if (address == null)
             {
                 return NotFound();

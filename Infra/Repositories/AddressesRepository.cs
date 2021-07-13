@@ -17,10 +17,7 @@ namespace Infra.Repositories
 
         public IEnumerable<Address> GetByUserId(Guid id)
         {
-            {
-                return _db.Set<Address>().Where(x => x.UserId == id).ToArray();
-            }
+            return _db.Set<Address>().Where(x => x.UserId == id).ToArray();
         }
-
     }
 }

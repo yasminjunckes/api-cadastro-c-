@@ -3,7 +3,6 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-
 namespace Infra.Mapping
 {
     public class AddressMapping: IEntityTypeConfiguration<Address>
@@ -61,6 +60,5 @@ namespace Infra.Mapping
             builder
                 .HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
         }
-
     }
 }

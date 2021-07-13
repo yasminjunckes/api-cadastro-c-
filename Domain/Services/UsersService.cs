@@ -32,6 +32,7 @@ namespace Domain.Services
                 _usersRepository.Add(user);
                 return new UserDTO(user.Id);
             }
+
             return new UserDTO(userValidation.errors);
         }
 
