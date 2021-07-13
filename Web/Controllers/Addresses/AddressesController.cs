@@ -19,6 +19,20 @@ namespace Web.Controllers.Addresses
         public IActionResult Create(Guid userId, [FromBody] AddressesRequest request)
         {
             Guid addressId = Guid.NewGuid();
+
+            if (request.Principal == true)
+            {
+                var addressCheck = _addressesService.GetAddresses(userId);
+
+                foreach (var item in addressCheck)
+                {
+                    if (item.Principal == true)
+                    {
+                        return BadRequest("Já existe um endereço principal.");
+                    }
+                }
+            }
+
             var viaCep = _addressesService.GetAddress(request.PostalCode);
 
             if (viaCep.City == null)

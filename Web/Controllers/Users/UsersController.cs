@@ -20,7 +20,6 @@ namespace Web.Controllers.Users
         }
 
         [HttpPost]
-        //IActionResult é mais genérico e conseguimos retornar tanto o Unauthorized, quanto o Ok.
         public IActionResult Create(UsersRequest request)
         {
             Guid userId = Guid.NewGuid();
@@ -39,11 +38,25 @@ namespace Web.Controllers.Users
                 return BadRequest(userResponse.Errors);
             }
 
+            bool principalTrue = false;
+
             foreach (var item in request.Address)
             {
                 if (item == null || item.PostalCode == "")
                 {
                     return Ok(_usersService.GetById(userId));
+                }
+
+                if (item.Principal == true)
+                {
+                    if (principalTrue == true)
+                    {
+                        item.Principal = false;
+                    }
+                    else
+                    {
+                        principalTrue = true;
+                    }
                 }
 
                 var viaCep = _addressesService.GetAddress(item.PostalCode);
@@ -64,7 +77,6 @@ namespace Web.Controllers.Users
                     item.Principal,
                     userId
                     );
-
             }
             
             IEnumerable<Address> userAddresses = _addressesService.GetAddresses(userId);
@@ -107,8 +119,6 @@ namespace Web.Controllers.Users
             var modifiedUser = _usersService.GetById(id);
             return Ok(modifiedUser);
         }
-
-
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
