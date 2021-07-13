@@ -32,7 +32,7 @@ namespace Web.Controllers.Addresses
             }
 
             var viaCep = _addressesService.GetAddress(request.PostalCode);
-            if (viaCep.City == null)
+            if (viaCep.IsValid == false)
             {
                 return BadRequest("Cep inválido");
             }

@@ -1,11 +1,12 @@
-using System;
-using Domain.Entities;
 using Domain.DTO;
+using Domain.Entities;
 using Domain.Interfaces;
-using System.Collections.Generic;
-using System.Net;
-using System.IO;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Domain.Services
 {
@@ -47,33 +48,54 @@ namespace Domain.Services
             return new AddressDTO(address.Id);
         }
 
+        public bool PostalCodeValidator(string cep)
+        {
+            Regex Rgx = new Regex(@"^\d{5}-\d{3}$");
+
+            if (!Rgx.IsMatch(cep))
+                return false;
+            else
+                return true;
+        }
+
         public Address GetAddress(string postaslCode)
         {
-           WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
+            if (!PostalCodeValidator(postaslCode) == true)
+            {
+                Address invalidAddress = new Address();
+                return (invalidAddress);
+            }
 
-           request.Credentials = CredentialCache.DefaultCredentials;
-           HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
 
-           Stream dataStream = response.GetResponseStream();
-           StreamReader reader = new StreamReader(dataStream);
-           string responseFromServer = reader.ReadToEnd();
+            request.Credentials = CredentialCache.DefaultCredentials;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-           reader.Close();
-           dataStream.Close();
-           response.Close();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
 
-           JObject json = JObject.Parse(responseFromServer);
+            reader.Close();
+            dataStream.Close();
+            response.Close();
 
-           string line1 = (string)json.GetValue("logradouro");
-           string city = (string)json.GetValue("localidade");
-           string state = (string)json.GetValue("uf");
-           string district = (string)json.GetValue("bairro");
+            JObject json = JObject.Parse(responseFromServer);
+            if((bool)json.GetValue("erro") == true)
+            {
+                Address errorAddress = new Address();
+                return(errorAddress);
+            }
 
-           Address address = new Address(line1, postaslCode, city, state, district);
+            string line1 = (string)json.GetValue("logradouro");
+            string city = (string)json.GetValue("localidade");
+            string state = (string)json.GetValue("uf");
+            string district = (string)json.GetValue("bairro");
 
-           return address;        
+            Address address = new Address(line1, postaslCode, city, state, district);
+
+            return address;
         }
-            
+
         public Address GetById(Guid id)
         {
             return _addressesRepository.Get(id);
