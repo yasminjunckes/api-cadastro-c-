@@ -39,32 +39,35 @@ namespace Web.Controllers.Users
                 return BadRequest(userResponse.Errors);
             }
 
-            if (request.Address == null || request.Address.PostalCode == "") 
+            if (request.Address == null || request.Address[0].PostalCode == "") 
             {
                 return Ok(_usersService.GetById(userId));
             }
 
-            var viaCep = _addressesService.GetAddress(request.Address.PostalCode);
-
-            if (viaCep.City == null)
+            foreach (var item in request.Address)
             {
-                return BadRequest("Usuário cadastrado com sucesso. Erro ao cadastrar o endereço: cep inválido!");
+                var viaCep = _addressesService.GetAddress(item.PostalCode);
+
+                if (viaCep.City == null)
+                {
+                    return BadRequest("Usuário cadastrado com sucesso. Erro ao cadastrar o endereço: cep inválido!");
+                }
+
+                var addressResponse = _addressesService.Create(
+                    viaCep.Line1,
+                    item.Line2,
+                    item.Number,
+                    item.PostalCode,
+                    viaCep.City,
+                    viaCep.State,
+                    viaCep.District,
+                    item.Principal,
+                    userId
+                    );
+
             }
-
-            var addressResponse = _addressesService.Create(
-                viaCep.Line1,
-                request.Address.Line2,
-                request.Address.Number,
-                request.Address.PostalCode,
-                viaCep.City,
-                viaCep.State,
-                viaCep.District,
-                request.Address.Principal,
-                userId
-                );
-
+            
             IEnumerable<Address> userAddresses = _addressesService.GetAddresses(userId);
-
             User user = _usersService.GetById(userId);
 
             foreach (var item in userAddresses)
@@ -103,7 +106,6 @@ namespace Web.Controllers.Users
             _usersService.Modify(user);
             var modifiedUser = _usersService.GetById(id);
             return Ok(modifiedUser);
-
         }
 
 
@@ -117,8 +119,6 @@ namespace Web.Controllers.Users
             {
                 return NotFound();
             }
-
-
             return Ok(user);
         }
 

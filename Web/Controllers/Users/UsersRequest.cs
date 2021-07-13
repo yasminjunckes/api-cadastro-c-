@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Web.Controllers.Users
@@ -11,6 +12,6 @@ namespace Web.Controllers.Users
         public string Email { get; set; }
         public string Phone { get; set; }
         public DateTime? RemovedAt { get; set; } = null;
-        public AddressesRequest Address { get; set; }
+        public List<AddressesRequest> Address { get; set; }
     }
 }
