@@ -16,6 +16,7 @@ namespace Domain.Services
         }
 
         public UserDTO Create(
+            Guid id,
             string name,
             string personalDocument,
             string birthDate,
@@ -23,7 +24,7 @@ namespace Domain.Services
             string phone
         )
         {
-            var user = new User(name, personalDocument, birthDate, email, phone);
+            var user = new User(id, name, personalDocument, birthDate, email, phone);
             var userValidation = user.Validate();
 
             if (userValidation.isValid)
@@ -31,6 +32,7 @@ namespace Domain.Services
                 _usersRepository.Add(user);
                 return new UserDTO(user.Id);
             }
+
             return new UserDTO(userValidation.errors);
         }
 

@@ -8,6 +8,7 @@ namespace Domain.Interfaces
     public interface IUsersService
     {
         UserDTO Create(
+            Guid userId,
             string name,
             string personalDocument,
             string birthDate,

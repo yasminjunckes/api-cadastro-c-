@@ -7,18 +7,16 @@ namespace Domain.Entities
 {
     public class User : Entity
     {
-        public string Name { get; set; } //Validar
-        public string PersonalDocument { get; set; } //Validar
+        public string Name { get; set; }
+        public string PersonalDocument { get; set; }
         public string BirthDate { get; set; }
-        public string Email { get; set; } //Validar
-        public string Phone { get; set; } //Validar
+        public string Email { get; set; }
+        public string Phone { get; set; }
         public DateTime? RemovedAt {get; set; } = null;
-        
-        // public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
 
-        public User(string name, string personalDocument, string birthDate, string email, string phone)
+        public User(Guid id, string name, string personalDocument, string birthDate, string email, string phone)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             PersonalDocument = personalDocument;
             BirthDate = birthDate;
@@ -50,6 +48,7 @@ namespace Domain.Entities
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -58,7 +57,6 @@ namespace Domain.Entities
             if (string.IsNullOrEmpty(PersonalDocument)) return false;
 
             var personalDocument = PersonalDocument.Replace(".", "").Replace("-", "");
-            
             if (personalDocument.Length != 11) return false;
 
             if (!personalDocument.All(char.IsNumber)) return false;
@@ -83,7 +81,6 @@ namespace Domain.Entities
             }
 
             rest = sum % 11;
-
             rest = rest < 2 ? 0 : 11 - rest;
 
             digit = rest.ToString();
@@ -96,9 +93,7 @@ namespace Domain.Entities
             }
 
             rest = sum % 11;
-
             rest = rest < 2 ? 0 : 11 - rest;
-
             digit += rest.ToString();
 
             if (personalDocument.EndsWith(digit)) return true;
@@ -116,6 +111,7 @@ namespace Domain.Entities
                 RegexOptions.IgnoreCase
                 );
             }
+
             return false;
         }
 
@@ -126,16 +122,17 @@ namespace Domain.Entities
                 var phone = Phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace(".", "");
                 if (phone.All(char.IsNumber))
                 {
-                    if (phone[2] == 57 && phone.Length == 11)  // Compara se o 1º numero depois do DDD é 9 (tabela ASCII)
+                    if (phone[2] == 57 && phone.Length == 11)
                     {
                         return true;
                     }
-                    else if (Convert.ToInt32(phone[2].ToString()) != 9 && phone.Length == 10)  // Compara de o 1º numero depois do DDD NÃO é 9
+                    else if (Convert.ToInt32(phone[2].ToString()) != 9 && phone.Length == 10)
                     {
                         return true;
                     }
                 }
             }
+
             return false;
         }
 
@@ -161,8 +158,5 @@ namespace Domain.Entities
             }
             return (errors, errors.Count == 0);
         }
-
-
-
     }
 }

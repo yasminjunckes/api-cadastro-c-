@@ -1,5 +1,5 @@
 ﻿using System;
-using Domain.Entities;
+using System.Collections.Generic;
 
 namespace Web.Controllers.Users
 {
@@ -10,8 +10,7 @@ namespace Web.Controllers.Users
         public string BirthDate { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public DateTime? RemovedAt {get; set; } = null;
-        
-        //public list<Adress> Adresses { get; protected set;}  ---> Incluir no construtor depois
+        public DateTime? RemovedAt { get; set; } = null;
+        public List<AddressesRequest> Address { get; set; }
     }
 }

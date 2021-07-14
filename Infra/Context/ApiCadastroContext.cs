@@ -1,19 +1,13 @@
-using System;
-using System.Reflection;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Infra.Context
 {
     public class ApiCadastroContext : DbContext
     {
-        public ApiCadastroContext(DbContextOptions options) : base(options)
-        {
-        }
+        public ApiCadastroContext(DbContextOptions options) : base(options){}
 
-        public ApiCadastroContext()
-        {
-        }
+        public ApiCadastroContext(){}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +16,7 @@ namespace Infra.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = Environment.GetEnvironmentVariable("ProviderConnectionString");
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
@@ -31,5 +25,4 @@ namespace Infra.Context
             }
         }
     }
-
 }
