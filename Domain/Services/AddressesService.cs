@@ -33,16 +33,6 @@ namespace Domain.Services
         {
             var address = new Address(line1, line2, number, postalCode, city, state, district, principal, addressId);
 
-            // TODO = validação de endereço
-            //
-            // var addressValidation = address.Validate();
-            // if (addressValidation.isValid)
-            // {
-            //     _addressesRepository.Add(address);
-            //     return new addressDTO(address.Id);
-            // }
-            // return new addressDTO(addressValidation.errors);
-
             _addressesRepository.Add(address);
 
             return new AddressDTO(address.Id);
@@ -53,20 +43,24 @@ namespace Domain.Services
             Regex Rgx = new Regex(@"^\d{5}-\d{3}$");
 
             if (!Rgx.IsMatch(cep))
+            {
                 return false;
+            }
             else
+            {
                 return true;
+            }
         }
 
-        public Address GetAddress(string postaslCode)
+        public Address GetAddress(string postalCode)
         {
-            if (!PostalCodeValidator(postaslCode) == true)
+            if (!PostalCodeValidator(postalCode) == true)
             {
                 Address invalidAddress = new Address();
                 return (invalidAddress);
             }
 
-            WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postaslCode + "/json/");
+            WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postalCode + "/json/");
 
             request.Credentials = CredentialCache.DefaultCredentials;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -91,7 +85,7 @@ namespace Domain.Services
             string state = (string)json.GetValue("uf");
             string district = (string)json.GetValue("bairro");
 
-            Address address = new Address(line1, postaslCode, city, state, district);
+            Address address = new Address(line1, postalCode, city, state, district);
 
             return address;
         }
