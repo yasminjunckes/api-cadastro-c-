@@ -38,28 +38,10 @@ namespace Web.Controllers.Users
                 return BadRequest(userResponse.Errors);
             }
 
-            bool principalTrue = false;
             foreach (var item in request.Address)
             {
-                if (item == null || item.PostalCode == "")
-                {
-                    return Ok(_usersService.GetById(userId));
-                }
-
-                if (item.Principal == true)
-                {
-                    if (principalTrue == true)
-                    {
-                        item.Principal = false;
-                    }
-                    else
-                    {
-                        principalTrue = true;
-                    }
-                }
-
                 var viaCep = _addressesService.GetAddress(item.PostalCode);
-                if (viaCep.City == null)
+                if (viaCep == null)
                 {
                     return BadRequest("Usuário cadastrado com sucesso. Erro ao cadastrar o endereço: cep inválido:" +  item.PostalCode);
                 }
@@ -79,11 +61,6 @@ namespace Web.Controllers.Users
             
             IEnumerable<Address> userAddresses = _addressesService.GetAddresses(userId);
             User user = _usersService.GetById(userId);
-
-            foreach (var item in userAddresses)
-            {
-                item.User = null;
-            }
 
             var response = new
             {

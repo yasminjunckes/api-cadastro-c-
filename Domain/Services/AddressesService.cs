@@ -28,10 +28,23 @@ namespace Domain.Services
             string state,
             string district,
             bool principal,
-            Guid addressId
+            Guid userId
         )
         {
-            var address = new Address(line1, line2, number, postalCode, city, state, district, principal, addressId);
+            bool newPrincipal = principal;
+            if (principal == true)
+            {
+                var addressCheck = GetAddresses(userId);
+
+                foreach (var item in addressCheck)
+                {
+                    if (item.Principal == true)
+                    {
+                        newPrincipal = false;
+                    }
+                }
+            }
+            var address = new Address(line1, line2, number, postalCode, city, state, district, newPrincipal, userId);
 
             _addressesRepository.Add(address);
 
@@ -40,9 +53,10 @@ namespace Domain.Services
 
         public bool PostalCodeValidator(string cep)
         {
-            Regex Rgx = new Regex(@"^\d{5}-\d{3}$");
+            cep.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace(".", "");
+            Regex Rgx = new Regex(@"^\d{8}$");
 
-            if (!Rgx.IsMatch(cep))
+            if (!Rgx.IsMatch(cep) || cep == null)
             {
                 return false;
             }
@@ -54,9 +68,9 @@ namespace Domain.Services
 
         public Address GetAddress(string postalCode)
         {
-            if (!PostalCodeValidator(postalCode) == true)
+            if (PostalCodeValidator(postalCode) == false)
             {
-                Address invalidAddress = new Address();
+                Address invalidAddress = null;
                 return (invalidAddress);
             }
 
@@ -74,12 +88,17 @@ namespace Domain.Services
             response.Close();
 
             JObject json = JObject.Parse(responseFromServer);
-            if((bool)json.GetValue("erro") == true)
+            try
             {
-                Address errorAddress = new Address();
-                return(errorAddress);
+                if((bool)json.GetValue("erro") == true)
+                {
+                    Address errorAddress = null;
+                    return(errorAddress);
+                }
             }
-
+            catch(SystemException)
+            {}
+            
             string line1 = (string)json.GetValue("logradouro");
             string city = (string)json.GetValue("localidade");
             string state = (string)json.GetValue("uf");

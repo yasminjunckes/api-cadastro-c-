@@ -14,12 +14,6 @@ namespace Domain.Entities
         public bool Principal { get; protected set; }
         public Guid UserId { get; protected set; }
         public virtual User User { get; set; }
-        public bool IsValid { get; set; } 
-
-        public Address()
-        {
-            IsValid = false;
-        }
 
         public Address(string line1, string postalCode, string city, string state, string district)
         {
@@ -28,7 +22,6 @@ namespace Domain.Entities
             City = city;
             State = state;
             District = district;
-            IsValid = true;
         }
 
         public Address(string line1, string line2, int number, string postalCode, string city, string state, string district, bool principal, Guid userId)
@@ -43,7 +36,6 @@ namespace Domain.Entities
             District = district;
             Principal = principal;
             UserId = userId;
-            IsValid = true;
         }
     }
 }

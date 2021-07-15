@@ -18,21 +18,8 @@ namespace Web.Controllers.Addresses
         [HttpPost("{userId}")]
         public IActionResult Create(Guid userId, [FromBody] AddressesRequest request)
         {
-            if (request.Principal == true)
-            {
-                var addressCheck = _addressesService.GetAddresses(userId);
-
-                foreach (var item in addressCheck)
-                {
-                    if (item.Principal == true)
-                    {
-                        return BadRequest("Já existe um endereço principal.");
-                    }
-                }
-            }
-
             var viaCep = _addressesService.GetAddress(request.PostalCode);
-            if (viaCep.IsValid == false)
+            if (viaCep == null)
             {
                 return BadRequest("Cep inválido");
             }
