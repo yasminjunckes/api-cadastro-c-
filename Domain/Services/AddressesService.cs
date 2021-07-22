@@ -1,6 +1,8 @@
 using Domain.DTO;
+using Domain.DTOs.Address;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Requests;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,29 +15,26 @@ namespace Domain.Services
     public class AddressesService : IAddressesService
     {
         private readonly IAddressesRepository _addressesRepository;
+        private readonly IUsersRepository _usersRepository;
 
-        public AddressesService(IAddressesRepository addressesRepository)
+        public AddressesService(IUsersRepository usersRepository, IAddressesRepository addressesRepository)
         {
+            _usersRepository = usersRepository;
             _addressesRepository = addressesRepository;
         }
 
-        public AddressDTO Create(
-            string line1,
-            string line2,
-            int number,
-            string postalCode,
-            string city,
-            string state,
-            string district,
-            bool principal,
-            Guid userId
-        )
+        public AddressDTO Create(AddressRequestDTO request, Guid userId)
         {
-            bool newPrincipal = principal;
-            if (principal == true)
+            var user = _usersRepository.Get(userId);
+            if(user == null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            bool newPrincipal = request.Principal;
+            if (request.Principal == true)
             {
                 var addressCheck = GetAddresses(userId);
-
                 foreach (var item in addressCheck)
                 {
                     if (item.Principal == true)
@@ -44,7 +43,19 @@ namespace Domain.Services
                     }
                 }
             }
-            var address = new Address(line1, line2, number, postalCode, city, state, district, newPrincipal, userId);
+
+            var viaCep = GetAddress(request.PostalCode);
+            var address = new Address(
+                viaCep.Line1, 
+                request.Line2, 
+                request.Number, 
+                request.PostalCode, 
+                viaCep.City, 
+                viaCep.State, 
+                viaCep.District, 
+                newPrincipal, 
+                userId
+                );
 
             _addressesRepository.Add(address);
 
@@ -70,8 +81,7 @@ namespace Domain.Services
         {
             if (PostalCodeValidator(postalCode) == false)
             {
-                Address invalidAddress = null;
-                return (invalidAddress);
+                throw new Exception("Cep inválido");
             }
 
             WebRequest request = WebRequest.Create("https://viacep.com.br/ws/" + postalCode + "/json/");
@@ -88,16 +98,10 @@ namespace Domain.Services
             response.Close();
 
             JObject json = JObject.Parse(responseFromServer);
-            try
-            {
-                if((bool)json.GetValue("erro") == true)
-                {
-                    Address errorAddress = null;
-                    return(errorAddress);
-                }
-            }
-            catch(SystemException)
-            {}
+
+            if (json.ContainsKey("erro")) {
+                throw new Exception("Cep inválido");
+            }    
             
             string line1 = (string)json.GetValue("logradouro");
             string city = (string)json.GetValue("localidade");

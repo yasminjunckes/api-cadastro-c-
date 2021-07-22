@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.DTO;
+﻿using Domain.DTO;
+using Domain.DTOs.User;
 using Domain.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace Domain.Interfaces
 {
     public interface IUsersService
     {
-        UserDTO Create(
-            Guid userId,
-            string name,
-            string personalDocument,
-            string birthDate,
-            string email,
-            string phone
-        );
+        UserDTO Create(UserRequestDTO request);
 
         User GetById(Guid id);
 

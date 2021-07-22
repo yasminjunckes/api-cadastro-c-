@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces;
+﻿using Domain.DTOs.Address;
+using Domain.Interfaces;
+using Domain.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Web.Controllers.Users;
@@ -16,7 +18,7 @@ namespace Web.Controllers.Addresses
         }
 
         [HttpPost("{userId}")]
-        public IActionResult Create(Guid userId, [FromBody] AddressesRequest request)
+        public IActionResult Create(Guid userId, [FromBody] AddressRequestDTO request)
         {
             var viaCep = _addressesService.GetAddress(request.PostalCode);
             if (viaCep == null)
@@ -24,17 +26,7 @@ namespace Web.Controllers.Addresses
                 return BadRequest("Cep inválido");
             }
 
-            var response = _addressesService.Create(
-                viaCep.Line1,
-                request.Line2,
-                request.Number,
-                request.PostalCode,
-                viaCep.City,
-                viaCep.State,
-                viaCep.District,
-                request.Principal,
-                userId
-                );
+            var response = _addressesService.Create(request, userId);
 
             var address = _addressesService.GetById(response.Id);
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Web.Controllers.Users
+namespace Domain.Requests
 {
     public class AddressesRequest
     {

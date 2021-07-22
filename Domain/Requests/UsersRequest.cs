@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Web.Controllers.Users
+namespace Domain.Requests
 {
     public class UsersRequest
     {
