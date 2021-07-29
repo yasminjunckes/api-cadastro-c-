@@ -120,7 +120,18 @@ namespace Domain.Services
 
         public IEnumerable<Address> GetAddresses(Guid userId)
         {
-            return _addressesRepository.GetByUserId(userId);
+            var user = _usersRepository.Get(userId);
+            if (user == null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            IEnumerable<Address> adresses = _addressesRepository.GetByUserId(userId);
+            if (adresses == null)
+            {
+                throw new Exception("Este usuário não possui endereços");
+            }
+            return adresses;
         }
 
         public void Delete(Guid id)

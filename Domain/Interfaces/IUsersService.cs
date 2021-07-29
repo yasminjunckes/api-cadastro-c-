@@ -12,8 +12,10 @@ namespace Domain.Interfaces
 
         User GetById(Guid id);
 
-        void Modify(User user);
+        void Modify(Guid id, UserRequestDTO user);
 
         IEnumerable<User> GetAll(Func<User, bool> predicate);
+
+        void Remove(Guid id);
     }
 }

@@ -20,28 +20,14 @@ namespace Web.Controllers.Addresses
         [HttpPost("{userId}")]
         public IActionResult Create(Guid userId, [FromBody] AddressRequestDTO request)
         {
-            var viaCep = _addressesService.GetAddress(request.PostalCode);
-            if (viaCep == null)
-            {
-                return BadRequest("Cep inválido");
-            }
-
             var response = _addressesService.Create(request, userId);
-
-            var address = _addressesService.GetById(response.Id);
-
-            return Ok(address);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetByUserId(Guid id)
         {
             var address = _addressesService.GetAddresses(id);
-            if (address == null)
-            {
-                return NotFound();
-            }
-
             return Ok(address);
         }
 

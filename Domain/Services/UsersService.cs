@@ -50,17 +50,45 @@ namespace Domain.Services
 
         public User GetById(Guid id)
         {
-            return _usersRepository.Get(id);
+            User user =  _usersRepository.Get(id);
+            if (user == null || user.RemovedAt != null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+            return user;
         }
 
-        public void Modify(User user)
+        public void Modify(Guid id, UserRequestDTO userRequest)
         {
+            User user = _usersRepository.Get(id);
+            if(user == null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            user.Name = userRequest.Name;
+            user.PersonalDocument = userRequest.PersonalDocument;
+            user.Email = userRequest.Email;
+            user.Phone = userRequest.Phone;
+            user.BirthDate = userRequest.BirthDate;
+
             _usersRepository.Modify(user);
         }
 
         public IEnumerable<User> GetAll(Func<User, bool> predicate)
         {
             return _usersRepository.GetAll(predicate);
+        }
+
+        public void Remove(Guid id)
+        {
+            var user = _usersRepository.Get(id);
+            if (user == null || user.RemovedAt != null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
+
+            user.RemovedAt = DateTime.Now;
         }
     }
 }

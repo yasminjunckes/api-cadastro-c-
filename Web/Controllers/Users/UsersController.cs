@@ -1,7 +1,6 @@
 using Domain.DTOs.User;
 using Domain.Entities;
 using Domain.Interfaces;
-using Domain.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,52 +26,24 @@ namespace Web.Controllers.Users
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] UsersRequest request)
+        public IActionResult UpdateUser(Guid id, [FromBody] UserRequestDTO request)
         {
-            var user = _usersService.GetById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.Name = request.Name;
-            user.PersonalDocument = request.PersonalDocument;
-            user.Email = request.Email;
-            user.Phone = request.Phone;
-            user.BirthDate = request.BirthDate;
-
-            _usersService.Modify(user);
-            var modifiedUser = _usersService.GetById(id);
-
-            return Ok(modifiedUser);
+            _usersService.Modify(id, request);
+            return Ok("Usuário modificado com sucesso");
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
             var user = _usersService.GetById(id);
-
-            if (user == null || user.RemovedAt != null)
-            {
-                return NotFound();
-            }
-
             return Ok(user);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            var user = _usersService.GetById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.RemovedAt = DateTime.Now;
-            _usersService.Modify(user);
-
-            return Ok("Usuario " + user.Name + " removido com sucesso");
+            _usersService.Remove(id);
+            return Ok("Usuario removido com sucesso");
         }
 
         [HttpGet()]
