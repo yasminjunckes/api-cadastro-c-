@@ -1,23 +1,14 @@
+using Domain.DTO;
+using Domain.DTOs.Address;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
-using Domain.DTO;
-using Domain.Entities;
 
 namespace Domain.Interfaces
 {
     public interface IAddressesService
     {
-        AddressDTO Create(
-            string line1,
-            string line2,
-            int number,
-            string postalCode,
-            string city,
-            string state,
-            string district,
-            bool principal,
-            Guid userId
-        );
+        AddressDTO Create(AddressRequestDTO request, Guid userId);
 
         Address GetById(Guid id);
 
